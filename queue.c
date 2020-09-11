@@ -84,10 +84,12 @@ bool q_insert_tail(queue_t *q, char *s)
     }
     strncpy(newt->value, s, strlen(s) + 1);
     newt->next = NULL;
-    q->tail->next = newt;
-    q->tail = newt;
-    if (!q->size)
+    if (!q->size) {
         q->head = newt;
+        q->tail = newt;
+    } else {
+        q->tail->next = newt;
+    }
     q->size++;
     return true;
 }
@@ -116,7 +118,7 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
  */
 int q_size(queue_t *q)
 {
-    return q->size;
+    return q ? q->size : 0;
 }
 
 /*
