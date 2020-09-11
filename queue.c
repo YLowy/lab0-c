@@ -23,9 +23,14 @@ queue_t *q_new()
 /* Free all storage used by queue */
 void q_free(queue_t *q)
 {
-    /* TODO: How about freeing the list elements and the strings? */
-    /* Free queue structure */
+    while (q->head) {
+        list_ele_t *ptr = q->head;
+        free(q->head->value);
+        q->head = q->head->next;
+        free(ptr);
+    }
     free(q);
+    q->size = 0;
 }
 
 /*
@@ -99,6 +104,8 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
     /* TODO: You need to fix up this code. */
     /* TODO: Remove the above comment when you are about to implement. */
+
+
     q->head = q->head->next;
     return true;
 }
