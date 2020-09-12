@@ -86,10 +86,10 @@ bool q_insert_tail(queue_t *q, char *s)
     newt->next = NULL;
     if (!q->size) {
         q->head = newt;
-        q->tail = newt;
     } else {
         q->tail->next = newt;
     }
+    q->tail = newt;
     q->size++;
     return true;
 }
@@ -104,11 +104,20 @@ bool q_insert_tail(queue_t *q, char *s)
  */
 bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
-    /* TODO: You need to fix up this code. */
-    /* TODO: Remove the above comment when you are about to implement. */
-
-
+    if (!q)
+        return false;
+    if (!q->size)
+        return false;
+    if (sp && q->head->value) {
+        memset(sp, '\0', bufsize);
+        strncpy(sp, q->head->value, bufsize - 1);
+    } else
+        return false;
+    list_ele_t *ptr = q->head;
     q->head = q->head->next;
+    free(ptr->value);
+    free(ptr);
+    q->size--;
     return true;
 }
 
@@ -132,7 +141,24 @@ void q_reverse(queue_t *q)
 {
     /* TODO: You need to write the code for this function */
     /* TODO: Remove the above comment when you are about to implement. */
+    if (q->size < 2) {
+        printf("elements in queue lower than 2\n");
+        return;
+    }
+
+    list_ele_t *ptr = q->head->next->next;
+    q->tail->next = q->head;
+    while (q->head->next != q->tail) {
+        q->head->next->next = q->tail->next;
+        q->tail->next = q->head->next;
+        q->head->next = ptr;
+        ptr = ptr->next;
+    }
+    q->tail = q->head;
+    q->head = q->head->next;
+    q->tail->next = NULL;
 }
+
 
 /*
  * Sort elements of queue in ascending order
