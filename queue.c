@@ -1,9 +1,8 @@
+#include "queue.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "harness.h"
-#include "queue.h"
 list_ele_t *merge(list_ele_t *, list_ele_t *);
 list_ele_t *mergeSortList(list_ele_t *);
 /*
@@ -168,6 +167,9 @@ void q_reverse(queue_t *q)
  * No effect if q is NULL or empty. In addition, if q has only one
  * element, do nothing.
  */
+
+
+
 void q_sort(queue_t *q)
 {
     if (!q)
@@ -188,7 +190,7 @@ list_ele_t *merge(list_ele_t *L1, list_ele_t *L2)
     if (!L1)
         return L2;
     if (strcmp(L1->value, L2->value) < 0) {
-        printf("L1=%s	L2=%s\n", L1->value, L2->value);
+        // printf("L1=%s	L2=%s\n", L1->value, L2->value);
         L1->next = merge(L1->next, L2);
         return L1;
     } else {
