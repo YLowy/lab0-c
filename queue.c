@@ -4,7 +4,8 @@
 
 #include "harness.h"
 #include "queue.h"
-
+list_ele_t *merge(list_ele_t *, list_ele_t *);
+list_ele_t *mergeSortList(list_ele_t *);
 /*
  * Create empty queue.
  * Return NULL if could not allocate space.
@@ -139,8 +140,6 @@ int q_size(queue_t *q)
  */
 void q_reverse(queue_t *q)
 {
-    /* TODO: You need to write the code for this function */
-    /* TODO: Remove the above comment when you are about to implement. */
     if (q->size < 2) {
         printf("elements in queue lower than 2\n");
         return;
@@ -167,6 +166,48 @@ void q_reverse(queue_t *q)
  */
 void q_sort(queue_t *q)
 {
-    /* TODO: You need to write the code for this function */
-    /* TODO: Remove the above comment when you are about to implement. */
+    if (!q)
+        return;
+    if (q->size < 3)
+        return;
+    q->head = mergeSortList(q->head);
+    q->tail = q->head;
+    while (q->tail->next)
+        q->tail = q->tail->next;
+}
+
+list_ele_t *merge(list_ele_t *L1, list_ele_t *L2)
+{
+    // merge with recursive
+    if (!L2)
+        return L1;
+    if (!L1)
+        return L2;
+    if (strcmp(L1->value, L2->value) < 0) {
+        printf("L1=%s	L2=%s\n", L1->value, L2->value);
+        L1->next = merge(L1->next, L2);
+        return L1;
+    } else {
+        L2->next = merge(L1, L2->next);
+        return L2;
+    }
+}
+
+list_ele_t *mergeSortList(list_ele_t *head)
+{
+    if (!head || !head->next)
+        return head;
+    // tmp pointer for original q->head
+    list_ele_t *ptr1 = head->next;
+    list_ele_t *ptr2 = head;
+    while (ptr1 && ptr1->next) {
+        ptr2 = ptr2->next;
+        ptr1 = ptr1->next->next;
+    }
+    ptr1 = ptr2->next;
+    ptr2->next = NULL;
+    // sort start
+    list_ele_t *L1 = mergeSortList(head);
+    list_ele_t *L2 = mergeSortList(ptr1);
+    return merge(L1, L2);
 }
