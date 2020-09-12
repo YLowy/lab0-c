@@ -45,9 +45,9 @@ void q_free(queue_t *q)
  */
 bool q_insert_head(queue_t *q, char *s)
 {
-    list_ele_t *newh;
     if (!q)
         return false;
+    list_ele_t *newh;
     newh = malloc(sizeof(list_ele_t));
     if (!newh)
         return false;
@@ -74,9 +74,9 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
-    list_ele_t *newt;
     if (!q)
         return false;
+    list_ele_t *newt;
     newt = malloc(sizeof(list_ele_t));
     if (!newt)
         return false;
@@ -142,6 +142,8 @@ int q_size(queue_t *q)
  */
 void q_reverse(queue_t *q)
 {
+    if (!q)
+        return;
     if (q->size < 2) {
         printf("elements in queue lower than 2\n");
         return;
