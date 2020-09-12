@@ -24,6 +24,8 @@ queue_t *q_new()
 /* Free all storage used by queue */
 void q_free(queue_t *q)
 {
+    if (!q)
+        return;
     while (q->head) {
         list_ele_t *ptr = q->head;
         free(q->head->value);
