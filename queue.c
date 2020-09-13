@@ -181,7 +181,7 @@ void q_sort(queue_t *q)
     while (q->tail->next)
         q->tail = q->tail->next;
 }
-
+/*
 list_ele_t *merge(list_ele_t *L1, list_ele_t *L2)
 {
     // merge with recursive
@@ -189,7 +189,7 @@ list_ele_t *merge(list_ele_t *L1, list_ele_t *L2)
         return L1;
     if (!L1)
         return L2;
-    if (strcmp(L1->value, L2->value) < 0) {
+    if (strnatcmp(L1->value, L2->value) < 0) {
         // printf("L1=%s	L2=%s\n", L1->value, L2->value);
         L1->next = merge(L1->next, L2);
         return L1;
@@ -197,8 +197,44 @@ list_ele_t *merge(list_ele_t *L1, list_ele_t *L2)
         L2->next = merge(L1, L2->next);
         return L2;
     }
-}
+}*/
+list_ele_t *merge(list_ele_t *l1, list_ele_t *l2)
+{
+    if (!l2)
+        return l1;
+    if (!l1)
+        return l2;
 
+    list_ele_t *curr, *head;
+
+    if (strcmp(l1->value, l2->value) < 0) {
+        head = l1;
+        l1 = l1->next;
+    } else {
+        head = l2;
+        l2 = l2->next;
+    }
+
+    curr = head;
+
+    while (l1 && l2) {
+        if (strcmp(l1->value, l2->value) < 0) {
+            curr->next = l1;
+            l1 = l1->next;
+        } else {
+            curr->next = l2;
+            l2 = l2->next;
+        }
+        curr = curr->next;
+    }
+
+    if (l1)
+        curr->next = l1;
+    if (l2)
+        curr->next = l2;
+
+    return head;
+}
 list_ele_t *mergeSortList(list_ele_t *head)
 {
     if (!head || !head->next)
