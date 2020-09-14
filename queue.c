@@ -31,8 +31,8 @@ void q_free(queue_t *q)
         q->head = q->head->next;
         free(ptr);
     }
-    free(q);
     q->size = 0;
+    free(q);
 }
 
 /*
